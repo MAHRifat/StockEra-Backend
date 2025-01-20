@@ -21,9 +21,14 @@ const app = express();
 
 
 app.use(cors({
-    origin: ['https://stockera-2bc33.web.app/', 'https://stockera-dashboard.web.app'],
-    credentials: true,
-  }));
+    origin: ['https://stockera-2bc33.web.app', 'https://stockera-dashboard.web.app'], // Allowed origins
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], // Allowed methods
+    credentials: true, // Allow cookies and credentials
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin', 'Cookie'], // Explicitly list allowed headers
+}));
+
+app.options('*', cors());
+
 
 app.use(bodyParser.json());
 app.use(cookieParser());
