@@ -20,8 +20,11 @@ const app = express();
 
 
 
-// app.use(cors());
-app.use(cors());
+app.use(cors({
+    origin: ['https://stockera-2bc33.web.app/', 'https://stockera-dashboard.web.app'],
+    credentials: true,
+  }));
+
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.json());
