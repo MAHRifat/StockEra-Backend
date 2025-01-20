@@ -91,6 +91,7 @@ module.exports.Login = async (req, res, next) => {
       withCredentials: true,
       httpOnly: true,
       secure: true,
+      domain: '.web.app',
       sameSite: "None",
     });
     res.status(201).json({ 
