@@ -90,7 +90,7 @@ module.exports.Login = async (req, res, next) => {
     res.cookie("token", token, {
       withCredentials: true,
       httpOnly: true,
-      secure: true,
+      // secure: true,
       domain: '.web.app',
       sameSite: "None",
     });
