@@ -296,7 +296,7 @@ app.post("/newOrder", async (req, res) => {
         res.send("order cancel due to qty less then 1");
     }
     else {
-        newOrder.save();
+        await newOrder.save();
         res.send('Order saved');
     }
 });
