@@ -91,8 +91,8 @@ module.exports.Login = async (req, res, next) => {
       withCredentials: true,
       httpOnly: true,
       secure: true,
-      domain: '.web.app',
-      sameSite: "None",
+      domain: ".web.app", // Shared across subdomains
+      sameSite: "None",  // Required for cross-site cookies
     });
     res.status(201).json({ 
       message: "User logged in successfully", 
