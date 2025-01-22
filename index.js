@@ -18,10 +18,6 @@ const uri = process.env.MONGO_URL;
 const app = express();
 
 
-
-
-const cors = require("cors");
-
 app.use(
   cors({
     origin: [
