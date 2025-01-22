@@ -19,15 +19,38 @@ const app = express();
 
 
 app.use(
-  cors({
-    origin: [
-      "https://stockera-2bc33.web.app",
-      "https://stockera-dashboard.web.app",
-    ],
-    credentials: true, // Allow cookies
-  })
-);
+    cors({
+      origin: [
+        "https://stockera-2bc33.web.app",
+        "https://stockera-dashboard.web.app",
+      ],
+      credentials: true,
+      allowedHeaders: [
+        "Content-Type",
+        "Authorization",
+        "x-csrf-token",
+        "Access-Control-Allow-Headers",
+        "Access-Control-Allow-Origin",
+        "Access-Control-Allow-Credentials",
+      ],
+    })
+  );
+  
 
+app.use((req, res, next) => {
+    if (req.method === "OPTIONS") {
+      res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
+      return res.status(200).json({});
+    }
+    next();
+  });
+
+  app.use((req, res, next) => {
+    console.log("Request Method:", req.method);
+    console.log("Request Origin:", req.headers.origin);
+    console.log("Request Headers:", req.headers);
+    next();
+  });
 
 app.options('*', cors());
 
@@ -35,6 +58,7 @@ app.options('*', cors());
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 
 app.use("/", authRoute);
