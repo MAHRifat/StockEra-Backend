@@ -27,10 +27,19 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin', 'Cookie'], // Explicitly list allowed headers
 }));
 
+app.options('*', cors());
+
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "https://stockera-2bc33.web.app");
+    res.header("Access-Control-Allow-Origin", "https://stockera-dashboard.web.app");
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header("Access-Control-Allow-Headers", "Content-Type,Authorization");
+    res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE");
+    next();
+});
 
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.json());
 
@@ -68,34 +77,18 @@ app.post('/verify-email', async (req, res) => {
 });
 
 
-// app.post("/api/verify-cookie", (req, res) => {
-//     const { token } = req.cookies;
-//     console.log("token: " + token);
-//     console.log("token key: " + process.env.TOKEN_KEY);
-//     if (!token) {
-//         return res.status(401).json({ status: false, message: "No token provided" });
-//     }
-
-//     try {
-//         const user = jwt.verify(token, process.env.TOKEN_KEY);
-//         console.log(user);
-//         res.json({ status: true, user }); // Send the decoded user info
-//     } catch (err) {
-//         res.status(401).json({ status: false, message: "Invalid token" });
-//     }
-// });
-
-// Middleware for verifying cookies and tokens
 app.post("/api/verify-cookie", (req, res) => {
-    const token = req.cookies.token; // Extract token from cookies
-
+    const { token } = req.cookies;
+    console.log("token: " + token);
+    console.log("token key: " + process.env.TOKEN_KEY);
     if (!token) {
         return res.status(401).json({ status: false, message: "No token provided" });
     }
 
     try {
-        const user = jwt.verify(token, process.env.TOKEN_KEY); // Verify the token
-        res.json({ status: true, user }); // Send decoded user info
+        const user = jwt.verify(token, process.env.TOKEN_KEY);
+        console.log(user);
+        res.json({ status: true, user }); // Send the decoded user info
     } catch (err) {
         res.status(401).json({ status: false, message: "Invalid token" });
     }
