@@ -285,6 +285,7 @@ app.get("/allOrders", async (req, res) => {
 });
 
 app.post("/newOrder", async (req, res) => {
+    console.log(req.body);
     let newOrder = new OrdersModel({
         name: req.body.name,
         qty: req.body.qty,
@@ -293,7 +294,7 @@ app.post("/newOrder", async (req, res) => {
     });
 
     if (newOrder.qty <= 0) {
-        res.send("order cancel due to qty less then 1");
+        return res.status(400).send("Order quantity must be greater than zero.");
     }
     else {
         await newOrder.save();
@@ -302,6 +303,8 @@ app.post("/newOrder", async (req, res) => {
 });
 
 app.post("/updateOrder", async (req, res) => {
+    console.log(req.body);
+
     const { name, qty, price } = req.body;
 
     try {
