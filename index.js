@@ -20,28 +20,26 @@ const app = express();
 
 
 
-app.use(cors({
-    origin: ['https://stockera-2bc33.web.app', 'https://stockera-dashboard.web.app'], // Allowed origins
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], // Allowed methods
-    credentials: true, // Allow cookies and credentials
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin', 'Cookie'], // Explicitly list allowed headers
-}));
-
-app.options('*', cors());
-
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "https://stockera-2bc33.web.app");
-    res.header("Access-Control-Allow-Origin", "https://stockera-dashboard.web.app");
-    res.header("Access-Control-Allow-Credentials", "true");
-    res.header("Access-Control-Allow-Headers", "Content-Type,Authorization");
-    res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE");
-    next();
-});
-
-
-app.use(bodyParser.json());
-app.use(cookieParser());
-app.use(express.json());
+const corsOptions = {
+    origin: function (origin, callback) {
+      const allowedOrigins = ['https://stockera-2bc33.web.app', 'https://stockera-dashboard.web.app'];
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin', 'Cookie'],
+  };
+  
+  app.use(cors(corsOptions));  // Use dynamic CORS settings
+  
+  app.use(bodyParser.json());
+  app.use(cookieParser());
+  app.use(express.json());
+  
 
 
 app.use("/", authRoute);
