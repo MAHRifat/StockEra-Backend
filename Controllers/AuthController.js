@@ -89,6 +89,7 @@ module.exports.Login = async (req, res, next) => {
     console.log(user.username, user.password, user.email);
 
     const token = createSecretToken(user._id, user.username, user.email);
+    console.log("genereate token ", token);
     res.cookie("token", token, {
       withCredentials: true,
       httpOnly: true,
@@ -96,6 +97,7 @@ module.exports.Login = async (req, res, next) => {
       domain: ".web.app", // Shared across subdomains
       sameSite: "None",  // Required for cross-site cookies
     });
+    console.log("Cookie set successfully");
     res.status(201).json({ 
       message: "User logged in successfully", 
       success: true,
