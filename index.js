@@ -25,36 +25,20 @@ app.use(
         "https://stockera-dashboard.web.app",
       ],
       credentials: true,
-      methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
-      allowedHeaders: [
-        "Content-Type",
-        "Authorization",
-        "x-csrf-token",
-        "Access-Control-Allow-Headers",
-        "Access-Control-Allow-Origin",
-        "Access-Control-Allow-Credentials",
-        "Cookies"
-      ],
+      allowedHeaders: "*",
     })
   );
   
 
-app.use((req, res, next) => {
-    if (req.method === "OPTIONS") {
-      res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
-      return res.status(200).json({});
-    }
-    next();
-  });
+// app.use((req, res, next) => {
+//     if (req.method === "OPTIONS") {
+//       res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
+//       return res.status(200).json({});
+//     }
+//     next();
+//   });
 
-  app.use((req, res, next) => {
-    console.log("Request Method:", req.method);
-    console.log("Request Origin:", req.headers.origin);
-    console.log("Request Headers:", req.headers);
-    next();
-  });
-
-app.options('*', cors());
+// app.options('*', cors());
 
 
 app.use(bodyParser.json());
