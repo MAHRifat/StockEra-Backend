@@ -25,7 +25,6 @@ app.use(
         "https://stockera-dashboard.web.app",
       ],
       credentials: true,
-      allowedHeaders: "*",
     })
   );
   
