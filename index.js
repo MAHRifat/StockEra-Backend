@@ -37,15 +37,15 @@ app.use(
   );
   
 
-app.use((req, res, next) => {
-    if (req.method === "OPTIONS") {
-      res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
-      return res.status(200).json({});
-    }
-    next();
-  });
+// app.use((req, res, next) => {
+//     if (req.method === "OPTIONS") {
+//       res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
+//       return res.status(200).json({});
+//     }
+//     next();
+//   });
 
-app.options('*', cors());
+// app.options('*', cors());
 
 
 app.use(express.json());
@@ -88,23 +88,22 @@ app.post('/verify-email', async (req, res) => {
 
 
 app.post("/api/verify-cookie", (req, res) => {
-    const { token } = req.cookies;
-    console.log("Received token:", token); // Log the received token
-  
+    const token = req.cookies.token;
+
     if (!token) {
-      console.log("No token provided");
-      return res.status(401).json({ status: false, message: "No token provided" });
+        console.error("No token provided");
+        return res.status(401).json({ status: false, message: "No token provided" });
     }
-  
+
     try {
-      const user = jwt.verify(token, process.env.TOKEN_KEY);
-      console.log("Decoded User:", user); // Log decoded user
-      res.json({ status: true, user });  // Respond with user details
+        const user = jwt.verify(token, process.env.TOKEN_KEY);
+        res.json({ status: true, user });
     } catch (err) {
-      console.error("Invalid token:", err.message);
-      res.status(401).json({ status: false, message: "Invalid token" });
+        console.error("Invalid token:", err.message);
+        res.status(401).json({ status: false, message: "Invalid token" });
     }
-  });
+});
+
   
   
 

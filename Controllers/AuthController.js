@@ -93,9 +93,9 @@ module.exports.Login = async (req, res, next) => {
     res.cookie("token", token, {
       withCredentials: true,
       httpOnly: true,
-      secure: false,
+      secure: true,
       domain: ".web.app", // Shared across subdomains
-      sameSite: "Lax",  // Required for cross-site cookies
+      sameSite: "None",  // Required for cross-site cookies
     });
     console.log("Cookie set successfully with token:", token);
     res.status(201).json({ 
