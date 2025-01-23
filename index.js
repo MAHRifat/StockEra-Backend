@@ -37,21 +37,28 @@ app.use(
   );
   
 
-// app.use((req, res, next) => {
-//     if (req.method === "OPTIONS") {
-//       res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
-//       return res.status(200).json({});
-//     }
-//     next();
-//   });
+app.use((req, res, next) => {
+    if (req.method === "OPTIONS") {
+      res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
+      return res.status(200).json({});
+    }
+    next();
+  });
 
-// app.options('*', cors());
+  app.use((req, res, next) => {
+    console.log("Request Method:", req.method);
+    console.log("Request Origin:", req.headers.origin);
+    console.log("Request Headers:", req.headers);
+    next();
+  });
+
+app.options('*', cors());
 
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 
 app.use("/", authRoute);
@@ -88,24 +95,22 @@ app.post('/verify-email', async (req, res) => {
 
 
 app.post("/api/verify-cookie", (req, res) => {
-    const token = req.cookies.token;
-
+    const { token } = req.cookies;
+    console.log("token: " + token);
+    console.log("token key: " + process.env.TOKEN_KEY);
     if (!token) {
-        console.error("No token provided");
         return res.status(401).json({ status: false, message: "No token provided" });
     }
 
     try {
         const user = jwt.verify(token, process.env.TOKEN_KEY);
-        res.json({ status: true, user });
+        console.log(user);
+        res.json({ status: true, user }); // Send the decoded user info
     } catch (err) {
-        console.error("Invalid token:", err.message);
         res.status(401).json({ status: false, message: "Invalid token" });
     }
 });
 
-  
-  
 
 
 
