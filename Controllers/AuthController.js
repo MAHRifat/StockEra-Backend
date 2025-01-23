@@ -93,11 +93,11 @@ module.exports.Login = async (req, res, next) => {
     res.cookie("token", token, {
       withCredentials: true,
       httpOnly: true,
-      secure: true,
+      secure: false,
       domain: ".web.app", // Shared across subdomains
-      sameSite: "None",  // Required for cross-site cookies
+      sameSite: "Lax",  // Required for cross-site cookies
     });
-    console.log("Cookie set successfully");
+    console.log("Cookie set successfully with token:", token);
     res.status(201).json({ 
       message: "User logged in successfully", 
       success: true,
