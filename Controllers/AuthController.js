@@ -105,6 +105,7 @@ module.exports.Login = async (req, res, next) => {
         name: user.username,
         email: user.email,
       },
+      verified: user.isVerified,
      });
     next();
 
