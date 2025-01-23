@@ -92,9 +92,9 @@ module.exports.Login = async (req, res, next) => {
     console.log("genereate token ", token);
     res.cookie("token", token, {
       withCredentials: true,
-      httpOnly: true,
-      secure: true,
-      domain: ".web.app", // Shared across subdomains
+      httpOnly: true, // Ensures the cookie is inaccessible to JavaScript (good for security)
+      secure: true,   // Required for HTTPS
+      domain: ".web.app", // Allows sharing cookies across subdomains
       sameSite: "None",  // Required for cross-site cookies
     });
     console.log("Cookie set successfully with token:", token);
